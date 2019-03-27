@@ -7,13 +7,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(builderClassName = "Builder", toBuilder = true)
-@Entity(name = "schools")
+@Entity
+@Table(name = "school")
 public class School {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -23,14 +25,14 @@ public class School {
     @JsonProperty("Lat")
     @Column(name = "Lat")
     private Double lat;
-    @JsonProperty("Long")
+    @JsonProperty("Lon")
     @Column(name = "Lon")
     private Double lon;
 
     private Integer minimumGpa;
     private Integer maxNumberOfPupils;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "pupil_id")
-    private List<Pupil> pupils;
+    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+    @lombok.Builder.Default
+    private List<Pupil> pupils = new ArrayList<>();
 }
